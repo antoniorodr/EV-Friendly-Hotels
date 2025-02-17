@@ -50,8 +50,15 @@ def home():
   return render_template("index.html")
 
 
+@app.route("/all")
+def all_hotels():
+    result = db.session.execute(db.select(Hotel).order_by(Hotel.name))
+    all_hotels = result.scalars().all()
+    return render_template("index.html", hotels = all_hotels)
+
+
 @app.route("/add", methods = ["POST"])
-def new_cafe():
+def new_hotel():
     name = request.form.get("name")
     existing_hotel = db.session.query(Hotel).filter_by(name=name).first()
     if existing_hotel:
