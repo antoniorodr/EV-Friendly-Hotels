@@ -54,7 +54,7 @@ def home():
 def all_hotels():
     result = db.session.execute(db.select(Hotel).order_by(Hotel.name))
     all_hotels = result.scalars().all()
-    return render_template("index.html", hotels = all_hotels)
+    return render_template("all_hotels.html", hotels = all_hotels)
 
 
 @app.route("/add", methods = ["POST"])
