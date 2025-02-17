@@ -1,33 +1,33 @@
 <div align="center" id="top"> 
-  <img src="./.github/app.gif" alt="your_repo" />
+  <img src="./.github/app.gif" alt="EV-Friendly-Hotels" />
 
   &#xa0;
 
-  <!-- <a href="https://your_repo.netlify.app">Demo</a> -->
+  <!-- <a href="https://EV-Friendly-Hotels.netlify.app">Demo</a> -->
 </div>
 
-<h1 align="center">your_repo</h1>
+<h1 align="center">EV Friendly Hotels</h1>
 
 <p align="center">
-  <img alt="Github top language" src="https://img.shields.io/github/languages/top/antoniorodr/your_repo?color=56BEB8">
+  <img alt="Github top language" src="https://img.shields.io/github/languages/top/antoniorodr/EV-Friendly-Hotels?color=56BEB8">
 
-  <img alt="Github language count" src="https://img.shields.io/github/languages/count/antoniorodr/your_repo?color=56BEB8">
+  <img alt="Github language count" src="https://img.shields.io/github/languages/count/antoniorodr/EV-Friendly-Hotels?color=56BEB8">
 
-  <img alt="Repository size" src="https://img.shields.io/github/repo-size/antoniorodr/your_repo?color=56BEB8">
+  <img alt="Repository size" src="https://img.shields.io/github/repo-size/antoniorodr/EV-Friendly-Hotels?color=56BEB8">
 
-  <img alt="License" src="https://img.shields.io/github/license/antoniorodr/your_repo?color=56BEB8">
+  <img alt="License" src="https://img.shields.io/github/license/antoniorodr/EV-Friendly-Hotels?color=56BEB8">
 
-  <img alt="Github issues" src="https://img.shields.io/github/issues/antoniorodr/your_repo?color=56BEB8" />
+  <img alt="Github issues" src="https://img.shields.io/github/issues/antoniorodr/EV-Friendly-Hotels?color=56BEB8" />
 
-  <img alt="Github forks" src="https://img.shields.io/github/forks/antoniorodr/your_repo?color=56BEB8" /> 
+  <img alt="Github forks" src="https://img.shields.io/github/forks/antoniorodr/EV-Friendly-Hotels?color=56BEB8" /> 
 
-  <img alt="Github stars" src="https://img.shields.io/github/stars/antoniorodr/your_repo?color=56BEB8" /> 
+  <img alt="Github stars" src="https://img.shields.io/github/stars/antoniorodr/EV-Friendly-Hotels?color=56BEB8" /> 
 </p>
 
 <!-- Status -->
 
 <!-- <h4 align="center"> 
-	🚧  your_repo 🚀 Under construction...  🚧
+	🚧  EV-Friendly-Hotels 🚀 Under construction...  🚧
 </h4> 
 
 <hr> -->
@@ -73,10 +73,10 @@ Before starting :checkered_flag:, you need to have [Git](https://git-scm.com) an
 
 ```bash
 # Clone this project
-$ git clone https://github.com/antoniorodr/your_repo
+$ git clone https://github.com/antoniorodr/EV-Friendly-Hotels
 
 # Access
-$ cd your_repo
+$ cd EV-Friendly-Hotels
 
 # Install dependencies
 $ yarn
