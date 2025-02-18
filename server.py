@@ -2,7 +2,7 @@ from flask import Flask, jsonify, render_template, request, redirect, url_for, f
 from flask_sqlalchemy import SQLAlchemy
 from flask_bootstrap import Bootstrap5
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
-from sqlalchemy import Integer, String, Float, or_
+from sqlalchemy import Integer, String, Float
 import csv
 from flask_wtf import FlaskForm, CSRFProtect
 from wtforms import StringField, SubmitField
@@ -18,7 +18,7 @@ load_dotenv()
 
 
 app = Flask(__name__)
-app.secret_key = "tO$&!|0wkamvVia0?n$NqIRVWOG69"
+app.secret_key = os.environ["secret_key"]
 class Base(DeclarativeBase):
     pass
 
@@ -42,8 +42,8 @@ class Charger(db.Model):
     type: Mapped[str] = mapped_column(String(250), nullable=False)
     name: Mapped[str] = mapped_column(String(250), nullable=False)
     description: Mapped[str] = mapped_column(String(500), nullable=False)
-    longitude: Mapped[str] = mapped_column(Float(20), nullable=False)
-    latitude: Mapped[str] = mapped_column(Float(20), nullable=False)
+    longitude: Mapped[float] = mapped_column(Float(20), nullable=False)
+    latitude: Mapped[float] = mapped_column(Float(20), nullable=False)
     maps_link: Mapped[str] = mapped_column(String(250), nullable=False)
 
     def to_dict(self):
@@ -160,28 +160,70 @@ def get_token():
 
 @app.route("/api/add", methods = ["POST"])
 def new_charger():
-    name = request.form.get("name")
-    existing_charger = db.session.query(Charger).filter_by(name=name).first()
+    token = request.headers.get("token")
+    check_token_result = db.session.execute(db.select(Token).where(Token.token == token))
+    check_token = check_token_result.scalars().first()
+    longitude = request.form.get("longitude")
+    latitude = request.form.get("latitude")
+    existing_charger = db.session.query(Charger).filter_by(longitude=longitude, latitude=latitude).first()
     if existing_charger:
-        return jsonify(error={"message": "A charger with this name already exists."}), 400
-
-    new_charger = Charger(
-        name=name,
-        description=request.form.get("description"),
-        longitude=request.form.get("longitude"),
-        latitude=request.form.get("latitude"),
-        maps_link=request.form.get("maps_link"),
-    )
-
-    db.session.add(new_charger)
-    db.session.commit()
-    return jsonify(response={"success": "Successfully added the new charger."})
+        return jsonify(error={"message": "A charger with this coordinates already exists."}), 400
+    if check_token:
+        new_charger = Charger(
+            name=request.form.get("name"), 
+            type=request.form.get("layer_name"), 
+            description=request.form.get("description"),  
+            longitude=request.form.get("longitude"),  
+            latitude=request.form.get("latitude"),  
+            maps_link=request.form.get("maps_link"),  
+        )
+        db.session.add(new_charger)
+        db.session.commit()
+        return jsonify(response={"success": "Successfully added the new charger."}), 200
+    return jsonify(error={"error": "You need a valid token."}), 401
 
 @app.route("/api/all")
 def all_cafe():
-    result = db.session.execute(db.select(Charger).order_by(Charger.name))
-    all_chargers = result.scalars().all()
-    return jsonify(chargers=[charger.to_dict() for charger in all_chargers])
+    token = request.headers.get("token")
+    check_token_result = db.session.execute(db.select(Token).where(Token.token == token))
+    check_token = check_token_result.scalars().first()
+    if check_token:
+        result = db.session.execute(db.select(Charger).order_by(Charger.name))
+        all_chargers = result.scalars().all()
+        return jsonify(chargers=[charger.to_dict() for charger in all_chargers])
+    return jsonify(error={"error": "You need a valid token."}), 401
+
+@app.route("/api/search/")
+def search_cafe():
+    token = request.headers.get("token")
+    check_token_result = db.session.execute(db.select(Token).where(Token.token == token))
+    check_token = check_token_result.scalars().first()
+    query = request.args.get("location")
+    if check_token:
+        result = db.session.execute(db.select(Charger).where(Charger.name == query))
+        all_chargers = result.scalars().all()
+        if all_chargers:
+            return jsonify(chargers=[charger.to_dict() for charger in all_chargers])
+        else:
+            return jsonify(error={"Not Found": "Sorry, we don't find a charger at that location."}), 404
+    return jsonify(error={"error": "You need a valid token."}), 401
+
+
+@app.route("/update/<charger_id>", methods = ["PATCH"])
+def update(charger_id):
+    token = request.headers.get("token")
+    check_token_result = db.session.execute(db.select(Token).where(Token.token == token))
+    check_token = check_token_result.scalars().first()
+    new_description = request.args.get("description")
+    result = db.get_or_404(Charger, charger_id)
+    if check_token:
+        if result:
+            result.description = f"{new_description}"
+            db.session.commit()
+            return jsonify(response={"success": "Successfully updated the description."}), 200
+        else:
+            return jsonify(error={"Not Found": "Sorry, a charger with that ID was not found in the database."}), 404
+    return jsonify(error={"error": "You need a valid token."}), 401
 
 
 if __name__ == "__main__":
