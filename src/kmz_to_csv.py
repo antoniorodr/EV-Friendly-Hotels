@@ -41,7 +41,7 @@ class KmzConverter():
         df.drop(columns=["geometry"], inplace=True)
         columns = ["layer_name"] + [col for col in df.columns if col != "layer_name"]
         df = df[columns]
-        df.to_csv("data/EV-friendly hotels in Europe.csv", index=False)
+        df.to_csv("data/EV-friendly chargers in Europe.csv", index=False)
 
 
 if __name__ == "__main__":

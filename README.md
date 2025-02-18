@@ -1,31 +1,31 @@
 <div align="center" id="top"> 
-  <img src="./.github/car.png" alt="EV-Friendly-Hotels" />
+  <img src="./.github/car.png" alt="EV-Friendly-chargers" />
 
 &#xa0;
 
-  <!-- <a href="https://EV-Friendly-Hotels.netlify.app">Demo</a> -->
+  <!-- <a href="https://EV-Friendly-chargers.netlify.app">Demo</a> -->
 </div>
 
-<h1 align="center">EV Friendly Hotels</h1>
+<h1 align="center">EV Friendly chargers</h1>
 
 <p align="center">
-  <img alt="Github top language" src="https://img.shields.io/github/languages/top/antoniorodr/EV-Friendly-Hotels?color=56BEB8">
+  <img alt="Github top language" src="https://img.shields.io/github/languages/top/antoniorodr/EV-Friendly-chargers?color=56BEB8">
 
-  <img alt="Github language count" src="https://img.shields.io/github/languages/count/antoniorodr/EV-Friendly-Hotels?color=56BEB8">
+  <img alt="Github language count" src="https://img.shields.io/github/languages/count/antoniorodr/EV-Friendly-chargers?color=56BEB8">
 
-  <img alt="Repository size" src="https://img.shields.io/github/repo-size/antoniorodr/EV-Friendly-Hotels?color=56BEB8">
+  <img alt="Repository size" src="https://img.shields.io/github/repo-size/antoniorodr/EV-Friendly-chargers?color=56BEB8">
 
-  <img alt="License" src="https://img.shields.io/github/license/antoniorodr/EV-Friendly-Hotels?color=56BEB8">
+  <img alt="License" src="https://img.shields.io/github/license/antoniorodr/EV-Friendly-chargers?color=56BEB8">
 
-  <img alt="Github issues" src="https://img.shields.io/github/issues/antoniorodr/EV-Friendly-Hotels?color=56BEB8" />
+  <img alt="Github issues" src="https://img.shields.io/github/issues/antoniorodr/EV-Friendly-chargers?color=56BEB8" />
 
-  <img alt="Github forks" src="https://img.shields.io/github/forks/antoniorodr/EV-Friendly-Hotels?color=56BEB8" />
+  <img alt="Github forks" src="https://img.shields.io/github/forks/antoniorodr/EV-Friendly-chargers?color=56BEB8" />
 
-  <img alt="Github stars" src="https://img.shields.io/github/stars/antoniorodr/EV-Friendly-Hotels?color=56BEB8" /> 
+  <img alt="Github stars" src="https://img.shields.io/github/stars/antoniorodr/EV-Friendly-chargers?color=56BEB8" /> 
 </p>
 
 <h4 align="center"> 
-	🚧  EV Friendly Hotels 🚀 Under development...  🚧
+	🚧  EV Friendly chargers 🚀 Under development...  🚧
 </h4>
 
 <hr>
@@ -48,7 +48,7 @@ This project creates a database from data extracted from a map. The database can
 
 ## :sparkles: Features
 
-:heavy_check_mark: Find hotels with EV chargers\
+:heavy_check_mark: Find chargers with EV chargers\
 :heavy_check_mark: Get access to all the data throught the API\
 :heavy_check_mark: Free to use!
 
@@ -68,10 +68,10 @@ There is no need to install anything to use the website or the API.
 
 ```bash
 # Clone this project
-$ git clone https://github.com/antoniorodr/EV-Friendly-Hotels
+$ git clone https://github.com/antoniorodr/EV-Friendly-chargers
 
 # Access
-$ cd EV-Friendly-Hotels
+$ cd EV-Friendly-chargers
 ```
 
 ## :memo: License

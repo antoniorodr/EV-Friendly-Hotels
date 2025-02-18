@@ -5,7 +5,9 @@
 		id="sidebarMenu"
 		aria-labelledby="sidebarMenuLabel">
 		<div class="offcanvas-header">
-			<h5 class="offcanvas-title" id="sidebarMenuLabel">EV Friendly Hotels</h5>
+			<h5 class="offcanvas-title" id="sidebarMenuLabel">
+				EV Friendly chargers
+			</h5>
 			<button
 				type="button"
 				class="btn-close"
@@ -28,7 +30,7 @@
 				<li class="nav-item">
 					<a
 						class="nav-link d-flex align-items-center gap-2"
-						href="{{ url_for('all_hotels') }}">
+						href="{{ url_for('all_chargers') }}">
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
 							width="16"
@@ -40,7 +42,7 @@
 								fill-rule="evenodd"
 								d="M1 8a7 7 0 1 1 2.898 5.673c-.167-.121-.216-.406-.002-.62l1.8-1.8a3.5 3.5 0 0 0 4.572-.328l1.414-1.415a.5.5 0 0 0 0-.707l-.707-.707 1.559-1.563a.5.5 0 1 0-.708-.706l-1.559 1.562-1.414-1.414 1.56-1.562a.5.5 0 1 0-.707-.706l-1.56 1.56-.707-.706a.5.5 0 0 0-.707 0L5.318 5.975a3.5 3.5 0 0 0-.328 4.571l-1.8 1.8c-.58.58-.62 1.6.121 2.137A8 8 0 1 0 0 8a.5.5 0 0 0 1 0" />
 						</svg>
-						All chargers / Hotels
+						All chargers / chargers
 					</a>
 				</li>
 				<li class="nav-item">
@@ -79,7 +81,9 @@
 					</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link d-flex align-items-center gap-2" href="#">
+					<a
+						class="nav-link d-flex align-items-center gap-2"
+						href="{{ url_for('get_token') }}">
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
 							width="16"
@@ -108,7 +112,7 @@
 				<li class="nav-item">
 					<a
 						class="nav-link d-flex align-items-center gap-2"
-						href="https://github.com/antoniorodr/EV-Friendly-Hotels"
+						href="https://github.com/antoniorodr/EV-Friendly-chargers"
 						target="_blank">
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
