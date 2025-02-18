@@ -16,6 +16,7 @@ Bootstrap5(app)
 
 class Hotel(db.Model):
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    type: Mapped[str] = mapped_column(String(250), nullable=False)
     name: Mapped[str] = mapped_column(String(250), nullable=False)
     description: Mapped[str] = mapped_column(String(500), nullable=False)
     longitude: Mapped[str] = mapped_column(Float(20), nullable=False)
@@ -34,7 +35,8 @@ def csv_to_db():
         for row in reader:
             with app.app_context():
                 new_hotel = Hotel(
-                    name=row["Name"],  
+                    name=row["Name"], 
+                    type=row["layer_name"], 
                     description=row["Description"],  
                     longitude=row["longitude"],  
                     latitude=row["latitude"],  
@@ -52,9 +54,18 @@ def home():
 
 @app.route("/all")
 def all_hotels():
-    result = db.session.execute(db.select(Hotel).order_by(Hotel.name))
-    all_hotels = result.scalars().all()
-    return render_template("all_hotels.html", hotels = all_hotels)
+    page = request.args.get("page", 1, type=int)
+    hotel_type = request.args.get("type", None)
+    
+    hotel_types = db.session.query(Hotel.type).distinct().all()
+    hotel_types = [ht[0] for ht in hotel_types]
+    
+    if hotel_type:
+        hotels = Hotel.query.filter_by(type=hotel_type).paginate(page=page, per_page=10)
+    else:
+        hotels = Hotel.query.paginate(page=page, per_page=10)
+    
+    return render_template("all_hotels.html", hotels=hotels, hotel_types=hotel_types)
 
 
 @app.route("/add", methods = ["POST"])
@@ -79,3 +90,4 @@ def new_hotel():
 
 if __name__ == "__main__":
   app.run(debug=True)
+    # csv_to_db()

@@ -18,13 +18,19 @@ class KmzConverter():
 
     def get_kml_layers(self, kml_file):
         layers_list = []
-        for layer in fiona.listlayers(kml_file) :    
+        for layer in fiona.listlayers(kml_file):
             df = gpd.read_file(kml_file, driver="LIBKML", layer=layer)
-            layers_list.append(df)
+            layers_list.append({"layer_name": layer, "data": df})
         return self.create_csv(layers_list)
 
     def create_csv(self, func_get_kml_layers):
-        df = gpd.GeoDataFrame(pd.concat(func_get_kml_layers, ignore_index=True))
+        all_data = []
+        for layer in func_get_kml_layers:
+            df = layer["data"]
+            df["layer_name"] = layer["layer_name"].replace('"', '')
+            all_data.append(df)
+        
+        df = gpd.GeoDataFrame(pd.concat(all_data, ignore_index=True))
         df_columns = [col for col in df.columns]
         if "geometry" in df_columns:
             df["geometry"] = df["geometry"].astype(str)
@@ -33,6 +39,8 @@ class KmzConverter():
         df[["longitude", "latitude"]] = df[["longitude", "latitude"]].astype(float)
         df["Maps link"] = df.apply(lambda row: f"https://www.google.com/maps/place/{row['latitude']},{row['longitude']}", axis=1)
         df.drop(columns=["geometry"], inplace=True)
+        columns = ["layer_name"] + [col for col in df.columns if col != "layer_name"]
+        df = df[columns]
         df.to_csv("data/EV-friendly hotels in Europe.csv", index=False)
 
 
