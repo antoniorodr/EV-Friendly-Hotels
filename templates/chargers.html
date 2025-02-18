@@ -2,7 +2,7 @@
 <html lang="en" data-bs-theme="auto">
 	<head>
 		<script src="static/js/color-modes.js"></script>
-		{% from 'bootstrap5/form.html' import render_form %}
+
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="description" content="" />
@@ -297,11 +297,34 @@
 
 				<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
 					<div
-						class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom w-100">
-						<h1 class="h2">Database Search</h1>
+						class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+						<h1 class="h2">All Matches</h1>
+						<div class="btn-toolbar mb-2 mb-md-0">
+							<div class="btn-group me-2"></div>
+						</div>
 					</div>
-					{{ render_form(form) }}
-					<p class="pt-5"><strong>{{ message }}</strong></p>
+					<div class="table-responsive small">
+						<table class="table table-striped table-sm">
+							<thead>
+								<tr>
+									<th scope="col">Name</th>
+									<th scope="col">Description</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for charger in chargers %}
+								<tr>
+									<td>
+										<a href="{{ url_for('charger', charger_id=charger.id) }}"
+											>{{ charger.name }}</a
+										>
+									</td>
+									<td>{{ charger.description }}</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
 				</main>
 			</div>
 		</div>

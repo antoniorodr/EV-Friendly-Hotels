@@ -2,7 +2,7 @@ from flask import Flask, jsonify, render_template, request, redirect, url_for, f
 from flask_sqlalchemy import SQLAlchemy
 from flask_bootstrap import Bootstrap5
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
-from sqlalchemy import Integer, String, Float
+from sqlalchemy import Integer, String, Float, or_
 import csv
 from flask_wtf import FlaskForm, CSRFProtect
 from wtforms import StringField, SubmitField
@@ -105,14 +105,20 @@ def all_chargers():
 def search():
     form = SearchForm()
     message = ""
+    chargers = []
+    
     if form.validate_on_submit():
-        result = db.session.execute(db.select(Charger).where(Charger.name == form.name.data))
-        charger = result.scalar()
-        if charger:
-            return redirect(url_for("charger", charger_id=charger.id))
+        pattern = f"%{form.name.data}%"
+        result = db.session.execute(db.select(Charger).where(Charger.name.ilike(pattern)))
+        chargers = result.scalars().all()
+        if chargers:
+            if len(chargers) == 1:
+                return redirect(url_for("charger", charger_id=chargers[0].id))
+            elif len(chargers) > 1:
+                return render_template("chargers.html", chargers=chargers)
         else:
             message = "That search term is not in our database."
-    return render_template("search.html", form=form, message=message)
+    return render_template("search.html", form=form, message=message, chargers=chargers)
 
 
 @app.route("/charger/<int:charger_id>")
