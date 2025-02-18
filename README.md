@@ -48,7 +48,7 @@ This project creates a database from data extracted from a map. The database can
 
 ## :sparkles: Features
 
-:heavy_check_mark: Find Hotels with EV Hotels\
+:heavy_check_mark: Find Hotels with EV Chargers\
 :heavy_check_mark: Get access to all the data throught the API\
 :heavy_check_mark: Free to use!
 
