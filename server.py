@@ -188,7 +188,7 @@ def all_cafe():
     check_token_result = db.session.execute(db.select(Token).where(Token.token == token))
     check_token = check_token_result.scalars().first()
     if check_token:
-        result = db.session.execute(db.select(Charger).order_by(Charger.name))
+        result = db.session.execute(db.select(Charger).order_by(Charger.id))
         all_chargers = result.scalars().all()
         return jsonify(chargers=[charger.to_dict() for charger in all_chargers])
     return jsonify(error={"error": "You need a valid token."}), 401
@@ -198,9 +198,9 @@ def search_cafe():
     token = request.headers.get("token")
     check_token_result = db.session.execute(db.select(Token).where(Token.token == token))
     check_token = check_token_result.scalars().first()
-    query = request.args.get("location")
+    query = f"%{request.args.get("location")}%"
     if check_token:
-        result = db.session.execute(db.select(Charger).where(Charger.name == query))
+        result = db.session.execute(db.select(Charger).where(Charger.name.ilike(query)))
         all_chargers = result.scalars().all()
         if all_chargers:
             return jsonify(chargers=[charger.to_dict() for charger in all_chargers])
