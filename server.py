@@ -18,6 +18,7 @@ app.secret_key = os.environ["secret_key"]
 class Base(DeclarativeBase):
     pass
 
+
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///chargers.db"
 db = SQLAlchemy(model_class=Base)
 db.init_app(app)
