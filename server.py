@@ -12,6 +12,7 @@ import re
 import os
 import smtplib
 from markupsafe import Markup
+import sqlalchemy as sa
 
 app = Flask(__name__)
 app.secret_key = os.environ["secret_key"]
@@ -24,6 +25,18 @@ db = SQLAlchemy(model_class=Base)
 db.init_app(app)
 Bootstrap5(app)
 csrf = CSRFProtect(app)
+
+
+# Check if the database needs to be initialized
+engine = sa.create_engine(app.config["SQLALCHEMY_DATABASE_URI"])
+inspector = sa.inspect(engine)
+if not inspector.has_table("chargers"):
+    with app.app_context():
+        db.drop_all()
+        db.create_all()
+        app.logger.info("Initialized the database!")
+else:
+    app.logger.info("Database already contains the chargers table.")
 
 class SearchForm(FlaskForm):
     name = StringField("Search for a charge station", validators=[DataRequired(), Length(1, 40)])
@@ -199,7 +212,7 @@ def search_cafe():
     token = request.headers.get("token")
     check_token_result = db.session.execute(db.select(Token).where(Token.token == token))
     check_token = check_token_result.scalars().first()
-    query = f"%{request.args.get("location")}%"
+    query = f"%{request.args.get('location')}%"
     if check_token:
         result = db.session.execute(db.select(Charger).where(Charger.name.ilike(query)))
         all_chargers = result.scalars().all()
