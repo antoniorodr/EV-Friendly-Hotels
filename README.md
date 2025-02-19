@@ -3,7 +3,8 @@
 
 &#xa0;
 
-  <!-- <a href="https://EV-Friendly-Hotels.netlify.app">Demo</a> -->
+<a href="https://evhotels.onrender.com">Live Demo</a>
+
 </div>
 
 <h1 align="center">EV Friendly Hotels</h1>
