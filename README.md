@@ -72,6 +72,9 @@ $ git clone https://github.com/antoniorodr/EV-Friendly-Hotels
 
 # Access
 $ cd EV-Friendly-Hotels
+
+# Install dependences
+$ pip install -r requirements.txt
 ```
 
 ## :memo: License

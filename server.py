@@ -160,9 +160,13 @@ def get_token():
 
 @app.route("/api/add", methods = ["POST"])
 def new_charger():
+    types = ["Hotels and accomodation, charging on private premises", "Charging only (no accomodation)", "Hotel, charging station nearby", "Superchargers", "Tesla Destination Chargers", "Hotel @ Supercharger"]
     token = request.headers.get("token")
     check_token_result = db.session.execute(db.select(Token).where(Token.token == token))
     check_token = check_token_result.scalars().first()
+    type_ = request.form.get("type")
+    if type_ not in types:
+        return jsonify(error={"message": f"The type should be one of the follow: {types}"}), 400
     longitude = request.form.get("longitude")
     latitude = request.form.get("latitude")
     existing_charger = db.session.query(Charger).filter_by(longitude=longitude, latitude=latitude).first()
@@ -214,7 +218,7 @@ def update(charger_id):
     token = request.headers.get("token")
     check_token_result = db.session.execute(db.select(Token).where(Token.token == token))
     check_token = check_token_result.scalars().first()
-    new_description = request.args.get("description")
+    new_description = request.form.get("description")
     result = db.get_or_404(Charger, charger_id)
     if check_token:
         if result:
