@@ -12,10 +12,6 @@ import re
 import os
 import smtplib
 from markupsafe import Markup
-from dotenv import load_dotenv
-
-load_dotenv()
-
 
 app = Flask(__name__)
 app.secret_key = os.environ["secret_key"]
