@@ -25,7 +25,7 @@
 				</h6>
 				<li class="nav-item">
 					<a
-						class="nav-link d-flex align-items-center gap-2 active"
+						class="nav-link d-flex align-items-center gap-2 {% if request.path == '/' %}active{% endif %}"
 						aria-current="page"
 						href="{{ url_for('home') }}">
 						<svg
@@ -45,7 +45,7 @@
 				</li>
 				<li class="nav-item">
 					<a
-						class="nav-link d-flex align-items-center gap-2"
+						class="nav-link d-flex align-items-center gap-2 {% if request.path == '/all' %}active{% endif %}"
 						href="{{ url_for('all_chargers') }}">
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
@@ -63,7 +63,7 @@
 				</li>
 				<li class="nav-item">
 					<a
-						class="nav-link d-flex align-items-center gap-2"
+						class="nav-link d-flex align-items-center gap-2 {% if request.path == '/search' %}active{% endif %}"
 						href="{{ url_for('search') }}">
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
@@ -108,7 +108,7 @@
 				</li>
 				<li class="nav-item">
 					<a
-						class="nav-link d-flex align-items-center gap-2"
+						class="nav-link d-flex align-items-center gap-2 {% if request.path == '/get_token' %}active{% endif %}"
 						href="{{ url_for('get_token') }}">
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
