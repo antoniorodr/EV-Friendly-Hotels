@@ -12,7 +12,6 @@ import re
 import os
 import smtplib
 from markupsafe import Markup
-import sqlalchemy as sa
 
 app = Flask(__name__)
 app.secret_key = os.environ["secret_key"]
