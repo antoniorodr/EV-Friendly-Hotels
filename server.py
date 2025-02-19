@@ -26,18 +26,6 @@ db.init_app(app)
 Bootstrap5(app)
 csrf = CSRFProtect(app)
 
-
-# Check if the database needs to be initialized
-# engine = sa.create_engine(app.config["SQLALCHEMY_DATABASE_URI"])
-# inspector = sa.inspect(engine)
-# if not inspector.has_table("chargers"):
-#     with app.app_context():
-#         db.drop_all()
-#         db.create_all()
-#         app.logger.info("Initialized the database!")
-# else:
-#     app.logger.info("Database already contains the chargers table.")
-
 class SearchForm(FlaskForm):
     name = StringField("Search for a charge station", validators=[DataRequired(), Length(1, 40)])
     submit = SubmitField("Submit")
