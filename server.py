@@ -4,6 +4,7 @@ from flask_bootstrap import Bootstrap5
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 from sqlalchemy import Integer, String, Float
 import csv
+import folium
 from flask_wtf import FlaskForm, CSRFProtect
 from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired, Length
@@ -85,6 +86,8 @@ def home():
 
 @app.route("/all")
 def all_chargers():
+    my_map = folium.Map(location = [52.8806586, 14.559359],
+                                            zoom_start = 4 )
     page = request.args.get("page", 1, type=int)
     charger_type = request.args.get("type", None)
     
@@ -92,8 +95,21 @@ def all_chargers():
     charger_types = [ht[0] for ht in charger_types]
     
     if charger_type:
+        with open ("data/EV-friendly chargers in Europe.csv") as file:
+            reader = csv.DictReader(file)
+            for row in reader:
+                if row["layer_name"] == charger_type:
+                    folium.Marker([row["latitude"], row["longitude"]],
+                        popup = row["Name"]).add_to(my_map)
+        my_map.save("templates/my_map.html")
         chargers = Charger.query.filter_by(type=charger_type).paginate(page=page, per_page=10)
     else:
+        with open ("data/EV-friendly chargers in Europe.csv") as file:
+            reader = csv.DictReader(file)
+            for row in reader:
+                folium.Marker([row["latitude"], row["longitude"]],
+                    popup = row["Name"]).add_to(my_map)
+        my_map.save("templates/my_map.html")
         chargers = Charger.query.paginate(page=page, per_page=10)
     
     return render_template("all_chargers.html", chargers=chargers, charger_types=charger_types)
@@ -153,6 +169,11 @@ def get_token():
                 )
                 flash("An email with your token has been sent. Check your inbox. If you haven't received an email with the token, please check your junk mail folder.")
     return render_template("token.html", form=form)
+
+
+@app.route("/map")
+def map():
+    return render_template("my_map.html")
 
 
 @app.route("/api/add", methods = ["POST"])
