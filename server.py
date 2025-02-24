@@ -13,6 +13,8 @@ import re
 import os
 import smtplib
 from markupsafe import Markup
+from io import BytesIO
+
 
 app = Flask(__name__)
 app.secret_key = os.environ["secret_key"]
@@ -86,8 +88,7 @@ def home():
 
 @app.route("/all")
 def all_chargers():
-    my_map = folium.Map(location = [52.8806586, 14.559359],
-                                            zoom_start = 4 )
+    my_map = folium.Map(location=[52.8806586, 14.559359], zoom_start=4)
     page = request.args.get("page", 1, type=int)
     charger_type = request.args.get("type", None)
     
@@ -99,16 +100,18 @@ def all_chargers():
         query = query.filter_by(type=charger_type)
     chargers = query.paginate(page=page, per_page=10)
     all_relevant_chargers = query.all()
-    
+
     for charger in all_relevant_chargers:
         folium.Marker(
             [charger.latitude, charger.longitude],
             popup=charger.name
         ).add_to(my_map)
 
-    my_map.save("templates/my_map.html")
+    map_buffer = BytesIO()
+    my_map.save(map_buffer, close_file=False)
+    map_html = map_buffer.getvalue().decode()
 
-    return render_template("all_chargers.html", chargers=chargers, charger_types=charger_types, selected_type=charger_type)
+    return render_template("all_chargers.html", chargers=chargers, charger_types=charger_types, map_html=map_html, selected_type=charger_type)
 
 @app.route("/search", methods=['GET', 'POST'])
 def search():
@@ -169,7 +172,29 @@ def get_token():
 
 @app.route("/map")
 def map():
-    return render_template("my_map.html")
+    my_map = folium.Map(location=[52.8806586, 14.559359], zoom_start=4)
+    charger_type = request.args.get("type", None)
+    
+    charger_types = db.session.query(Charger.type).distinct().all()
+    charger_types = [ht[0] for ht in charger_types]
+
+    query = Charger.query
+    if charger_type:
+        query = query.filter_by(type=charger_type)
+    all_relevant_chargers = query.all()
+
+    for charger in all_relevant_chargers:
+        folium.Marker(
+            [charger.latitude, charger.longitude],
+            popup=charger.name
+        ).add_to(my_map)
+
+    # Create an in-memory buffer to save the map
+    map_buffer = BytesIO()
+    my_map.save(map_buffer, close_file=False)
+    map_html = map_buffer.getvalue().decode()
+
+    return map_html
 
 
 @app.route("/api/add", methods = ["POST"])
