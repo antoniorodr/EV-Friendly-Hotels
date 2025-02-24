@@ -93,26 +93,22 @@ def all_chargers():
     
     charger_types = db.session.query(Charger.type).distinct().all()
     charger_types = [ht[0] for ht in charger_types]
-    
+
+    query = Charger.query
     if charger_type:
-        with open ("data/EV-friendly chargers in Europe.csv") as file:
-            reader = csv.DictReader(file)
-            for row in reader:
-                if row["layer_name"] == charger_type:
-                    folium.Marker([row["latitude"], row["longitude"]],
-                        popup = row["Name"]).add_to(my_map)
-        my_map.save("templates/my_map.html")
-        chargers = Charger.query.filter_by(type=charger_type).paginate(page=page, per_page=10)
-    else:
-        with open ("data/EV-friendly chargers in Europe.csv") as file:
-            reader = csv.DictReader(file)
-            for row in reader:
-                folium.Marker([row["latitude"], row["longitude"]],
-                    popup = row["Name"]).add_to(my_map)
-        my_map.save("templates/my_map.html")
-        chargers = Charger.query.paginate(page=page, per_page=10)
+        query = query.filter_by(type=charger_type)
+    chargers = query.paginate(page=page, per_page=10)
+    all_relevant_chargers = query.all()
     
-    return render_template("all_chargers.html", chargers=chargers, charger_types=charger_types)
+    for charger in all_relevant_chargers:
+        folium.Marker(
+            [charger.latitude, charger.longitude],
+            popup=charger.name
+        ).add_to(my_map)
+
+    my_map.save("templates/my_map.html")
+
+    return render_template("all_chargers.html", chargers=chargers, charger_types=charger_types, selected_type=charger_type)
 
 @app.route("/search", methods=['GET', 'POST'])
 def search():
