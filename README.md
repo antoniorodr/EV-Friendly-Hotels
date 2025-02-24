@@ -60,6 +60,7 @@ The following tools were used in this project:
 - [Flask Bootstrap](https://bootstrap-flask.readthedocs.io/en/stable/index.html)
 - [Flask SQLAlchemy](https://flask-sqlalchemy.readthedocs.io/en/stable/quickstart/)
 - [GeoPandas](https://geopandas.org/en/stable/getting_started/introduction.html)
+- [Folium](https://python-visualization.github.io/folium/latest/)
 
 ## :white_check_mark: Requirements
 
