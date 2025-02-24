@@ -170,33 +170,6 @@ def get_token():
     return render_template("token.html", form=form)
 
 
-@app.route("/map")
-def map():
-    my_map = folium.Map(location=[52.8806586, 14.559359], zoom_start=4)
-    charger_type = request.args.get("type", None)
-    
-    charger_types = db.session.query(Charger.type).distinct().all()
-    charger_types = [ht[0] for ht in charger_types]
-
-    query = Charger.query
-    if charger_type:
-        query = query.filter_by(type=charger_type)
-    all_relevant_chargers = query.all()
-
-    for charger in all_relevant_chargers:
-        folium.Marker(
-            [charger.latitude, charger.longitude],
-            popup=charger.name
-        ).add_to(my_map)
-
-    # Create an in-memory buffer to save the map
-    map_buffer = BytesIO()
-    my_map.save(map_buffer, close_file=False)
-    map_html = map_buffer.getvalue().decode()
-
-    return map_html
-
-
 @app.route("/api/add", methods = ["POST"])
 def new_charger():
     types = ["Hotels and accomodation, charging on private premises", "Charging only (no accomodation)", "Hotel, charging station nearby", "Superchargers", "Tesla Destination Chargers", "Hotel @ Supercharger"]
