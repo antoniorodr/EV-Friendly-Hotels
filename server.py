@@ -310,4 +310,3 @@ def update(charger_id):
 if __name__ == "__main__":
     app.run(debug=True)
     # csv_to_db()
-
